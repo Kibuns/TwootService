@@ -13,7 +13,7 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag strat_service:$(date +%s)
 
-      - name: Publish to Docker Hub
+      - name: Publish to Docker Hub 
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
