@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"regexp"
+	"strings"
 
 	"github.com/Kibuns/TwootService/DAL"
 	"github.com/Kibuns/TwootService/Models"
@@ -19,7 +21,6 @@ func main() {
 //controllers
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	send("twoot", "hoi wereld")
 	fmt.Fprintf(w, "Welcome to the HomePage!")
 	fmt.Println("Endpoint Hit: homePage")
 }
@@ -45,6 +46,18 @@ func storeTwoot(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		fmt.Println(err)
 		return
+	}
+
+	// check if the twoot content contains a hashtag
+	if strings.Contains(twoot.Content, "#") {
+		// use a regular expression to check if the hashtag is followed by any character except for a space
+		match, _ := regexp.MatchString(`#\p{L}+`, twoot.Content)
+		if match {
+			fmt.Println("hashtag found in content")
+			send("twoot", &twoot) //message to search service
+		} else {
+			fmt.Println("no hashtag found")
+		}
 	}
 
 	// insert the twoot into the database
