@@ -21,7 +21,7 @@ func main() {
 //controllers
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the HomePage!")
+	fmt.Fprintf(w, "Welcome to the HomePage of the Twoot Service!")
 	fmt.Println("Endpoint Hit: homePage")
 }
 
@@ -50,7 +50,7 @@ func storeTwoot(w http.ResponseWriter, r *http.Request) {
 
 	// check if the twoot content contains a hashtag
 	if strings.Contains(twoot.Content, "#") {
-		// use a regular expression to check if the hashtag is followed by any character except for a space
+		// use a regular expression to check if the hashtag is followed by any letter
 		match, _ := regexp.MatchString(`#\p{L}+`, twoot.Content)
 		if match {
 			fmt.Println("hashtag found in content")
