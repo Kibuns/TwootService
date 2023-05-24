@@ -41,9 +41,9 @@ func storeTwoot(w http.ResponseWriter, r *http.Request) {
 	// parse the request body into a Twoot struct
 	var twoot Models.Twoot
 	err := json.NewDecoder(body).Decode(&twoot)
-	fmt.Println(body)
+	fmt.Println(twoot.Content)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Could not decode body into twoot", http.StatusBadRequest)
 		fmt.Println(err)
 		return
 	}

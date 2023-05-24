@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twootservice-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: twootservice
+  template:
+    metadata:
+      labels:
+        app: twootservice
+    spec:
+      containers:
+        - name: twootservice
+          image: ninoverhaegh/twootservice:latest
+          ports:
+            - containerPort: 8080
