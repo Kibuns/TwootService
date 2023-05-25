@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Twoot service started!")
+	fmt.Println("Twoot service started! yipeee")
 	handleRequests()
 }
 
