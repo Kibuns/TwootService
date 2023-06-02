@@ -36,6 +36,12 @@ func returnTwoot(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(DAL.ReadSingleTwoot(idParam))
 }
 
+func deleteUser(w http.ResponseWriter, r *http.Request) {
+	var idParam string = mux.Vars(r)["user"]
+	DAL.DeleteAllOfUser(idParam)
+	fmt.Fprintf(w, "deleted everything from user: " + idParam)
+}
+
 func storeTwoot(w http.ResponseWriter, r *http.Request) {
 	body := r.Body
 	fmt.Println("Storing Twoot")
@@ -75,6 +81,7 @@ func handleRequests() {
 	myRouter.HandleFunc("/all", returnAll)
 	myRouter.HandleFunc("/get/{id}", returnTwoot)
 	myRouter.HandleFunc("/create", storeTwoot)
+	myRouter.HandleFunc("/delete/{user}", deleteUser)
 
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
