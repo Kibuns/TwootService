@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"regexp"
 	"strings"
+	"syscall"
 
 	"github.com/Kibuns/TwootService/DAL"
 	"github.com/Kibuns/TwootService/Models"
@@ -15,8 +18,19 @@ import (
 )
 
 func main() {
-	fmt.Println("Twoot service started! yipeee")
-	handleRequests()
+	fmt.Println("Started TwootService")
+	// create a channel to receive signals to stop the application
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+	
+	// start the goroutine to receive messages from the queue
+	go receiveDeleted()
+	
+	// start the goroutine to handle API requests
+	go handleRequests()
+	
+	// wait for a signal to stop the application
+	<-stop
 }
 
 //controllerssss
