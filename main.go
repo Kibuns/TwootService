@@ -56,6 +56,11 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "deleted everything from user: " + idParam)
 }
 
+func getAllOfUser(w http.ResponseWriter, r *http.Request) {
+	var idParam string = mux.Vars(r)["user"]
+	json.NewEncoder(w).Encode(DAL.ReadAllTwootsOfUser(idParam))
+}
+
 func storeTwoot(w http.ResponseWriter, r *http.Request) {
 	body := r.Body
 	fmt.Println("Storing Twoot")
@@ -96,6 +101,8 @@ func handleRequests() {
 	myRouter.HandleFunc("/get/{id}", returnTwoot)
 	myRouter.HandleFunc("/create", storeTwoot)
 	myRouter.HandleFunc("/delete/{user}", deleteUser)
+	myRouter.HandleFunc("/getall/{user}", getAllOfUser)
+
 
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }

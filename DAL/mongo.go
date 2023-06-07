@@ -59,6 +59,25 @@ func ReadAllTwoots() (values []primitive.M) {
 	return
 }
 
+func ReadAllTwootsOfUser(username string) (values []primitive.M){
+	twootCollection := client.Database("TwootDB").Collection("twoots")
+	
+	// retrieve all the documents
+	cursor, err := twootCollection.Find(context.TODO(), bson.D{{Key: "username", Value: username}})
+	if err != nil {
+		panic(err)
+	}
+
+	// convert the cursor result to bson
+	var results []bson.M
+	// check for errors in the conversion
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
 func ReadSingleTwoot(id string) (value primitive.M) {
 	twootCollection := client.Database("TwootDB").Collection("twoots")
 	// convert the hexadecimal string to an ObjectID type
